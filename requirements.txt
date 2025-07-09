@@ -1,0 +1,8 @@
+# Flask 核心与扩展
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Flask-Bcrypt
+
+# 环境变量管理
+python-dotenv
