@@ -1,5 +1,7 @@
+# 文件: render.yaml (最终修正版)
+
 services:
-  # 1. Python Web 服务器
+  # 1. 我们的 Python Web 服务器
   - type: web
     name: music-player-web
     env: python
@@ -16,22 +18,21 @@ services:
           type: pserv
           name: music-player-db
           property: connectionString
-    # Web 服务的存储盘（正确位置）
+    # Web 服务的存储盘, 用于存放上传的 mp3/pdf 文件
     disk:
       name: uploads-disk
       mountPath: /app/instance/uploads
       sizeGB: 1
 
-  # 2. PostgreSQL 数据库
+  # 2. 我们的 PostgreSQL 数据库
   - type: pserv
     name: music-player-db
     env: postgres
-    properties:
-      - key: max_connections
-        value: 100
-      - key: postgres_version
-        value: 14
-    # 数据库服务的存储盘（移到这里，作为 pserv 的属性）
+    # --- 【核心修正】 ---
+    # 删除了错误的 'properties' 块
+    # 使用官方指定的 'postgresMajorVersion' 字段来定义版本
+    postgresMajorVersion: 14
+    # 数据库服务的存储盘, 用于存放数据库自身的数据
     disk:
       name: postgres-data
       sizeGB: 1
