@@ -31,5 +31,12 @@ services:
   - type: pserv
     name: music-player-db
     env: postgres
-    postgresMajorVersion: 14
-    # 注意：数据库的持久化存储由Render自动管理，我们不需要在这里为它单独定义 disk
+    properties:
+    - key: max_connections
+      value: 100
+    - key: postgres_version
+      value: 14
+  
+  disk:
+    name: postgres-data
+    sizeGB: 1
