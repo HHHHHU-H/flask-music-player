@@ -1,39 +1,36 @@
-# 文件: render.yaml (部署说明书)
 
-# 定义我们服务所需要的资源
 services:
-  # 1. 我们的 Python Web 服务器
+
   - type: web
-    name: music-player-web # 服务的名字，可以自定义
-    env: python # 环境类型
-    # 当 main 分支有更新时，自动重新部署
+    name: music-player-web 
+    env: python
+  
     autoDeploy: true
-    # buildCommand 告诉 Render 如何准备环境
+ 
     buildCommand: "pip install -r requirements.txt"
-    # startCommand 告诉 Render 如何启动我们的应用
-    # 它会使用 gunicorn 来运行 app 文件夹里的 create_app() 函数
+ 
     startCommand: "gunicorn 'app:create_app()'"
-    # 环境变量组
+  
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.3 # 请确保这个版本和您本地开发的版本大致相同
+        value: 3.11.3 
       - key: SECRET_KEY
-        # 让 Render 自动为我们生成一个长而随机的安全密钥
+      
         generateValue: true
       - key: DATABASE_URL
-        # 从下面定义的数据库服务中获取连接地址
+     
         fromService:
           type: pserv
           name: music-player-db
           property: connectionString
 
-  # 2. 我们的 PostgreSQL 数据库
+
   - type: pserv
-    name: music-player-db # 数据库的名字
-    env: postgres # 环境类型
-    # 可以选择数据库版本
+    name: music-player-db 
+    env: postgres 
+   
     postgresMajorVersion: 14
-    # 定义一个持久化的网络硬盘来存储数据库数据
+    
     disk:
       name: postgres-data
       sizeGB: 1
