@@ -1,24 +1,17 @@
-
 services:
 
   - type: web
-    name: music-player-web 
+    name: music-player-web
     env: python
-  
     autoDeploy: true
- 
     buildCommand: "pip install -r requirements.txt"
- 
     startCommand: "gunicorn 'app:create_app()'"
-  
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.3 
+        value: 3.11.3
       - key: SECRET_KEY
-      
         generateValue: true
       - key: DATABASE_URL
-     
         fromService:
           type: pserv
           name: music-player-db
