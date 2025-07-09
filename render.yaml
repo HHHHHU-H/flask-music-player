@@ -29,8 +29,12 @@ services:
     name: music-player-db 
     env: postgres 
    
-    postgresMajorVersion: 14
-    
-    disk:
-      name: postgres-data
-      sizeGB: 1
+    properties:
+    - key: max_connections
+      value: 100
+    - key: postgres_version
+      value: 14
+  
+  disk:
+    name: postgres-data
+    sizeGB: 1
