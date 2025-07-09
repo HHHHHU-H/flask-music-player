@@ -1,5 +1,7 @@
-services:
+# 文件: render.yaml (最终修正版 - 已修复语法错误)
 
+services:
+  # 1. 我们的 Python Web 服务器
   - type: web
     name: music-player-web
     env: python
@@ -16,18 +18,18 @@ services:
           type: pserv
           name: music-player-db
           property: connectionString
+    # 【核心修正】: disk 的定义必须在这里，作为 web 服务的一个属性
+    # 它告诉 Render 为这个 web 服务附加一个网络硬盘
+    disk:
+      name: uploads-disk
+      # 将网络硬盘挂载到我们代码中 UPLOAD_FOLDER 定义的路径
+      # 注意：Render 的文件系统根目录是 /app/
+      mountPath: /app/instance/uploads
+      sizeGB: 1
 
-
+  # 2. 我们的 PostgreSQL 数据库
   - type: pserv
-    name: music-player-db 
-    env: postgres 
-   
-    properties:
-    - key: max_connections
-      value: 100
-    - key: postgres_version
-      value: 14
-  
-  disk:
-    name: postgres-data
-    sizeGB: 1
+    name: music-player-db
+    env: postgres
+    postgresMajorVersion: 14
+    # 注意：数据库的持久化存储由Render自动管理，我们不需要在这里为它单独定义 disk
